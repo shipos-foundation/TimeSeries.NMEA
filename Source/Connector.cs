@@ -2,6 +2,9 @@
  *  Copyright (c) Dolittle. All rights reserved.
  *  Licensed under the MIT License. See LICENSE in the project root for license information.
  *--------------------------------------------------------------------------------------------*/
+using System;
+using System.Linq;
+using System.Net;
 using System.Net.Sockets;
 using System.Text;
 using Dolittle.Collections;
@@ -44,8 +47,14 @@ namespace Dolittle.TimeSeries.NMEA
         /// <inheritdoc/>
         public void Connect()
         {
+            if (_configuration.Protocol == Protocol.Tcp) ConnectTcp();
+            else if (_configuration.Protocol == Protocol.Udp) ConnectUdp();
+            else _logger.Error($"Protocol not defined");
+        }
+        void ConnectTcp()
+        {
             var client = new TcpClient(_configuration.Ip, _configuration.Port);
-            using(var stream = client.GetStream())
+            using (var stream = client.GetStream())
             {
                 var started = false;
                 var skip = false;
@@ -55,7 +64,7 @@ namespace Dolittle.TimeSeries.NMEA
                     var result = stream.ReadByte();
                     if (result == -1) break;
 
-                    var character = (char) result;
+                    var character = (char)result;
                     switch (character)
                     {
                         case '$':
@@ -65,22 +74,45 @@ namespace Dolittle.TimeSeries.NMEA
                             {
                                 skip = true;
                                 var sentence = sentenceBuilder.ToString();
-                                var canParse = _parser.CanParse(sentence);
-                                if (canParse)
-                                {
-                                    var identifier = _parser.GetIdentifierFor(sentence);
-                                    var output = _parser.Parse(sentence);
-                                    output.ForEach(_ => DataReceived($"{identifier}.{_.Type}", _.Result, Timestamp.UtcNow));
-                                }
-
+                                ParseSentence(sentence);
                                 sentenceBuilder = new StringBuilder();
-
                             }
                             break;
                     }
                     if (started && !skip) sentenceBuilder.Append(character);
                     skip = false;
                 }
+            }
+        }
+        void ConnectUdp()
+        {
+            var listenPort = _configuration.Port;
+            using (var listener = new UdpClient(_configuration.Port))
+            {
+                var groupEP = new IPEndPoint(IPAddress.Any, _configuration.Port);
+                try
+                {
+                    while (true)
+                    {
+                        var sentenceBuilder = new StringBuilder();
+                        var bytes = listener.Receive(ref groupEP);
+                        var sentence = Encoding.ASCII.GetString(bytes, 0, bytes.Length);
+                        ParseSentence(sentence);
+                    }
+                }
+                catch (SocketException ex)
+                {
+                    _logger.Error(ex, $"Trouble connecting to socket");
+                }
+            }
+        }
+        void ParseSentence(string sentence)
+        {
+            if (_parser.CanParse(sentence))
+            {
+                var identifier = _parser.GetIdentifierFor(sentence);
+                var output = _parser.Parse(sentence);
+                output.ForEach(_ => DataReceived($"{identifier}.{_.Type}", _.Result, Timestamp.UtcNow));
             }
         }
     }

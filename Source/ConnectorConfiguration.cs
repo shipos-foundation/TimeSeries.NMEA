@@ -17,10 +17,13 @@ namespace Dolittle.TimeSeries.NMEA
         /// </summary>
         /// <param name="ip">The IP address for the connector</param>
         /// <param name="port">The Port to connect to</param>
-        public ConnectorConfiguration(string ip, int port)
+        /// <param name="protocol"><see cref="Protocol"/> to use for connecting</param>
+        public ConnectorConfiguration(string ip, int port, Protocol protocol)
         {
             Ip = ip;
             Port = port;
+            Protocol = protocol;
+
         }
 
         /// <summary>
@@ -32,5 +35,10 @@ namespace Dolittle.TimeSeries.NMEA
         /// Gets the port that will be used for connecting
         /// </summary>
         public int Port { get; }
+
+        /// <summary>
+        /// Gets the <see cref="Protocol"/> to use
+        /// </summary>
+        public Protocol Protocol { get; }
     }
 }
