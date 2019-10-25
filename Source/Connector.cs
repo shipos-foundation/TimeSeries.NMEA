@@ -47,9 +47,12 @@ namespace Dolittle.TimeSeries.NMEA
         /// <inheritdoc/>
         public void Connect()
         {
-            if (_configuration.Protocol == Protocol.Tcp) ConnectTcp();
-            else if (_configuration.Protocol == Protocol.Udp) ConnectUdp();
-            else _logger.Error($"Protocol not defined");
+            switch (_configuration.Protocol)
+            {
+                case Protocol.Tcp: ConnectTcp(); break;
+                case Protocol.Udp: ConnectUdp(); break;
+                default: _logger.Error("Protocol not defined"); break;
+            }
         }
         void ConnectTcp()
         {
