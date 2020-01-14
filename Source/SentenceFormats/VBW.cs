@@ -4,9 +4,9 @@
  *--------------------------------------------------------------------------------------------*/
 using System.Collections.Generic;
 using System.Linq;
-using Dolittle.TimeSeries.DataTypes;
+using RaaLabs.TimeSeries.DataTypes;
 
-namespace Dolittle.TimeSeries.NMEA.SentenceFormats
+namespace RaaLabs.TimeSeries.NMEA.SentenceFormats
 {
     /// <summary>
     /// Represents the format of "Dual Ground/Water Speed (should probably implement only send if status is valid, see documentation)"

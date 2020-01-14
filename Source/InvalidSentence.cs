@@ -4,7 +4,7 @@
  *--------------------------------------------------------------------------------------------*/
 using System;
 
-namespace Dolittle.TimeSeries.NMEA
+namespace RaaLabs.TimeSeries.NMEA
 {
     /// <summary>
     /// Exception that gets thrown if a sentence is in the invalid format

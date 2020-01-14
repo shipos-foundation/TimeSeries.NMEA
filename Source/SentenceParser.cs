@@ -9,7 +9,7 @@ using System.Linq;
 using Dolittle.Collections;
 using Dolittle.Types;
 
-namespace Dolittle.TimeSeries.NMEA
+namespace RaaLabs.TimeSeries.NMEA
 {
     /// <summary>
     /// Represents an implementation of <see cref="ISentenceParser"/>

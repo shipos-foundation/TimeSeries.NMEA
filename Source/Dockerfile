@@ -23,7 +23,7 @@ ARG CONFIGURATION
 
 VOLUME [ "/app/data" ]
 
-COPY Build/MSBuild/* ./Build/MSBuild/
+COPY default.props ./default.props
 COPY Source/*.csproj ./Source/
 
 WORKDIR /app/Source/
@@ -39,6 +39,5 @@ EXPOSE 5100/udp
 
 WORKDIR /app
 COPY --from=build-env /app/Source/out ./
-COPY --from=build-env /app/Source/data ./data
 
-ENTRYPOINT ["dotnet", "Dolittle.TimeSeries.NMEA.dll"]
+ENTRYPOINT ["dotnet", "RaaLabs.TimeSeries.NMEA.dll"]

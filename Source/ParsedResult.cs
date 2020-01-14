@@ -5,7 +5,7 @@
 
 using System;
 
-namespace Dolittle.TimeSeries.NMEA
+namespace RaaLabs.TimeSeries.NMEA
 {
     /// <summary>
     /// Represents a parsed result

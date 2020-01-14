@@ -10,10 +10,10 @@ using System.Text;
 using System.Threading;
 using Dolittle.Collections;
 using Dolittle.Logging;
-using Dolittle.TimeSeries.Modules;
-using Dolittle.TimeSeries.Modules.Connectors;
+using RaaLabs.TimeSeries.Modules;
+using RaaLabs.TimeSeries.Modules.Connectors;
 
-namespace Dolittle.TimeSeries.NMEA
+namespace RaaLabs.TimeSeries.NMEA
 {
     /// <summary>
     /// Represents a <see cref="IAmAPullConnector">pull connector</see> for Modbus

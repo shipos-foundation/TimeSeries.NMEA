@@ -4,7 +4,7 @@
  *--------------------------------------------------------------------------------------------*/
 using Dolittle.Configuration;
 
-namespace Dolittle.TimeSeries.NMEA
+namespace RaaLabs.TimeSeries.NMEA
 {
     /// <summary>
     /// Represents the configuration for <see cref="Connector"/>

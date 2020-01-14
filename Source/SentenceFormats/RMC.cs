@@ -4,9 +4,9 @@
  *--------------------------------------------------------------------------------------------*/
 using System;
 using System.Collections.Generic;
-using Dolittle.TimeSeries.DataTypes;
+using RaaLabs.TimeSeries.DataTypes;
 
-namespace Dolittle.TimeSeries.NMEA.SentenceFormats
+namespace RaaLabs.TimeSeries.NMEA.SentenceFormats
 {
     /// <summary> 
     /// Represents the format of "Recommended Minimum Navigation Information"

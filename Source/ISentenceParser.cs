@@ -5,7 +5,7 @@
 
 using System.Collections.Generic;
 
-namespace Dolittle.TimeSeries.NMEA
+namespace RaaLabs.TimeSeries.NMEA
 {
     /// <summary>
     /// Defines the parser of sentences
