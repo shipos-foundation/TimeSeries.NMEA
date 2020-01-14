@@ -10,10 +10,8 @@ namespace Dolittle.TimeSeries.NMEA.SentenceFormats
     /// <summary>
     /// Represents the format of "Heading - True"
     /// </summary>
-    public class HEHDT : ISentenceFormat
+    public class HDT : ISentenceFormat
     {
-        /// <inheritdoc/>
-        public string Talker => "HE";
 
         /// <inheritdoc/>
         public string Identitifer => "HDT";

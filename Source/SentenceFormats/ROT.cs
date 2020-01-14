@@ -10,11 +10,9 @@ namespace Dolittle.TimeSeries.NMEA.SentenceFormats
     /// <summary>
     /// Represents the format of "Rate Of Turn"
     /// </summary>
-    public class HEROT : ISentenceFormat
+    public class ROT : ISentenceFormat
     {
-        /// <inheritdoc/>
-        public string Talker => "HE";
-
+    
         /// <inheritdoc/>
         public string Identitifer => "ROT";
 

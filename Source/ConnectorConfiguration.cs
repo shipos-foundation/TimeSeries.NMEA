@@ -23,7 +23,6 @@ namespace Dolittle.TimeSeries.NMEA
             Ip = ip;
             Port = port;
             Protocol = protocol;
-
         }
 
         /// <summary>

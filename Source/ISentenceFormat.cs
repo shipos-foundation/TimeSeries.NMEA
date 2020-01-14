@@ -13,11 +13,6 @@ namespace Dolittle.TimeSeries.NMEA
     public interface ISentenceFormat
     {
         /// <summary>
-        /// Gets the talker of the sentence
-        /// </summary>
-        string Talker { get; }
-
-        /// <summary>
         /// Gets the setence identifier 
         /// </summary>
         string Identitifer { get; }

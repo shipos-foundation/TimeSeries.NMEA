@@ -10,10 +10,8 @@ namespace Dolittle.TimeSeries.NMEA.SentenceFormats
     /// <summary>
     /// Represents the format of "Wind Speed and Angle"
     /// </summary>
-    public class WIMWV : ISentenceFormat
+    public class MWV : ISentenceFormat
     {
-        /// <inheritdoc/>
-        public string Talker => "WI";
 
         /// <inheritdoc/>
         public string Identitifer => "MWV";

@@ -24,7 +24,7 @@ namespace Dolittle.TimeSeries.NMEA
         /// <param name="formats">All available <see cref="ISentenceFormat">formats</see></param>
         public SentenceParser(IInstancesOf<ISentenceFormat> formats)
         {
-            _formats = formats.ToDictionary(_ => $"{_.Talker}{_.Identitifer}", _ => _);
+            _formats = formats.ToDictionary(_ => $"{_.Identitifer}", _ => _);
         }
 
         /// <inheritdoc/>
@@ -32,7 +32,7 @@ namespace Dolittle.TimeSeries.NMEA
         {
             if (!IsValidSentence(sentence)) return false;
             sentence = sentence.Substring(1);
-            return _formats.ContainsKey(sentence.Substring(0, 5));
+            return _formats.ContainsKey(sentence.Substring(2, 3));
         }
 
         /// <inheritdoc/>
@@ -64,7 +64,7 @@ namespace Dolittle.TimeSeries.NMEA
             } else sentence = sentence.Substring(1);
 
             var values = sentence.Substring(6).Split(',');
-            var result = _formats[formatIdentifier].Parse(values);
+            var result = _formats[identifier].Parse(values);
             return result;
         }
 
@@ -82,7 +82,7 @@ namespace Dolittle.TimeSeries.NMEA
 
         void ThrowIfUnsupportedSentence(string sentence, string talker, string identifier)
         {
-            if( !_formats.ContainsKey($"{talker}{identifier}")) throw new UnsupportedSentence(sentence, talker, identifier);
+            if( !_formats.ContainsKey($"{identifier}")) throw new UnsupportedSentence(sentence, talker, identifier);
         }
 
         void ThrowIfSentenceChecksumIsInvalid(string sentence, byte actualChecksum, byte expectedChecksum)

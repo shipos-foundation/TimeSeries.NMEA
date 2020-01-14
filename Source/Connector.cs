@@ -7,6 +7,7 @@ using System.Linq;
 using System.Net;
 using System.Net.Sockets;
 using System.Text;
+using System.Threading;
 using Dolittle.Collections;
 using Dolittle.Logging;
 using Dolittle.TimeSeries.Modules;
@@ -56,56 +57,78 @@ namespace Dolittle.TimeSeries.NMEA
         }
         void ConnectTcp()
         {
-            var client = new TcpClient(_configuration.Ip, _configuration.Port);
-            using (var stream = client.GetStream())
+            while (true)
             {
-                var started = false;
-                var skip = false;
-                var sentenceBuilder = new StringBuilder();
-                for (;;)
+                try
                 {
-                    var result = stream.ReadByte();
-                    if (result == -1) break;
-
-                    var character = (char)result;
-                    switch (character)
+                    var client = new TcpClient(_configuration.Ip, _configuration.Port);
+                    using (var stream = client.GetStream())
                     {
-                        case '$':
-                            started = true;
-                            break;
-                        case '\n':
+                        var started = false;
+                        var skip = false;
+                        var sentenceBuilder = new StringBuilder();
+                        for (;;)
+                        {
+                            var result = stream.ReadByte();
+                            if (result == -1) break;
+
+                            var character = (char)result;
+                            switch (character)
                             {
-                                skip = true;
-                                var sentence = sentenceBuilder.ToString();
-                                ParseSentence(sentence);
-                                sentenceBuilder = new StringBuilder();
+                                case '$':
+                                    started = true;
+                                    break;
+                                case '\n':
+                                    {
+                                        skip = true;
+                                        var sentence = sentenceBuilder.ToString();
+                                        ParseSentence(sentence);
+                                        sentenceBuilder = new StringBuilder();
+                                    }
+                                    break;
                             }
-                            break;
+                            if (started && !skip) sentenceBuilder.Append(character);
+                            skip = false;
+                        }
                     }
-                    if (started && !skip) sentenceBuilder.Append(character);
-                    skip = false;
+                }
+                catch (Exception ex)
+                {
+                    _logger.Error(ex, "Error while connecting to TCP stream");
+                    Thread.Sleep(2000);
                 }
             }
         }
         void ConnectUdp()
         {
-            var listenPort = _configuration.Port;
-            using (var listener = new UdpClient(_configuration.Port))
+            while (true)
             {
-                var groupEP = new IPEndPoint(IPAddress.Any, _configuration.Port);
                 try
                 {
-                    while (true)
+                    var listenPort = _configuration.Port;
+                    using (var listener = new UdpClient(_configuration.Port))
                     {
-                        var sentenceBuilder = new StringBuilder();
-                        var bytes = listener.Receive(ref groupEP);
-                        var sentence = Encoding.ASCII.GetString(bytes, 0, bytes.Length);
-                        ParseSentence(sentence);
+                        var groupEP = new IPEndPoint(IPAddress.Any, _configuration.Port);
+                        try
+                        {
+                            while (true)
+                            {
+                                var sentenceBuilder = new StringBuilder();
+                                var bytes = listener.Receive(ref groupEP);
+                                var sentence = Encoding.ASCII.GetString(bytes, 0, bytes.Length);
+                                ParseSentence(sentence);
+                            }
+                        }
+                        catch (SocketException ex)
+                        {
+                            _logger.Error(ex, $"Trouble connecting to socket");
+                        }
                     }
                 }
-                catch (SocketException ex)
+                catch (Exception ex)
                 {
-                    _logger.Error(ex, $"Trouble connecting to socket");
+                    _logger.Error(ex, "Error while connecting to UDP stream");
+                    Thread.Sleep(2000);
                 }
             }
         }
@@ -116,6 +139,8 @@ namespace Dolittle.TimeSeries.NMEA
                 var identifier = _parser.GetIdentifierFor(sentence);
                 var output = _parser.Parse(sentence);
                 output.ForEach(_ => DataReceived($"{identifier}.{_.Type}", _.Result, Timestamp.UtcNow));
+                output.ForEach(_ => Console.WriteLine($"{identifier}.{_.Type}", _.Result, Timestamp.UtcNow));
+
             }
         }
     }

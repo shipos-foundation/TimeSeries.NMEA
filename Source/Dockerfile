@@ -21,6 +21,8 @@ WORKDIR /app
 
 ARG CONFIGURATION
 
+VOLUME [ "/app/data" ]
+
 COPY Build/MSBuild/* ./Build/MSBuild/
 COPY Source/*.csproj ./Source/
 
@@ -33,10 +35,10 @@ RUN dotnet publish -c $CONFIGURATION -o out
 
 
 FROM base
-
 EXPOSE 5100/udp
 
 WORKDIR /app
 COPY --from=build-env /app/Source/out ./
+COPY --from=build-env /app/Source/data ./data
 
 ENTRYPOINT ["dotnet", "Dolittle.TimeSeries.NMEA.dll"]
