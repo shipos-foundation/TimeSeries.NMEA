@@ -1,13 +1,13 @@
 /*---------------------------------------------------------------------------------------------
- *  Copyright (c) Dolittle. All rights reserved.
+ *  Copyright (c) RaaLabs. All rights reserved.
  *  Licensed under the MIT License. See LICENSE in the project root for license information.
  *--------------------------------------------------------------------------------------------*/
 using System.Collections.Generic;
 using Machine.Specifications;
-using Dolittle.TimeSeries.NMEA.SentenceFormats;
+using RaaLabs.TimeSeries.NMEA.SentenceFormats;
 using System.Linq;
 
-namespace Dolittle.TimeSeries.NMEA.for_SentenceFormats.when_parsing_VDVBW
+namespace RaaLabs.TimeSeries.NMEA.for_SentenceFormats.when_parsing_VDVBW
 {
     public class with_a_valid_messsage : given.a_VDVBW_parser
     {

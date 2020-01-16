@@ -1,13 +1,13 @@
 /*---------------------------------------------------------------------------------------------
- *  Copyright (c) Dolittle. All rights reserved.
+ *  Copyright (c) RaaLabs. All rights reserved.
  *  Licensed under the MIT License. See LICENSE in the project root for license information.
  *--------------------------------------------------------------------------------------------*/
 using System.Collections.Generic;
 using Machine.Specifications;
-using Dolittle.TimeSeries.NMEA.SentenceFormats;
+using RaaLabs.TimeSeries.NMEA.SentenceFormats;
 using System.Linq;
 
-namespace Dolittle.TimeSeries.NMEA.for_SentenceFormats.when_parsing_HEHDT
+namespace RaaLabs.TimeSeries.NMEA.for_SentenceFormats.when_parsing_HEHDT
 {
     public class with_a_valid_message : given.a_HEHDT_parser
     {

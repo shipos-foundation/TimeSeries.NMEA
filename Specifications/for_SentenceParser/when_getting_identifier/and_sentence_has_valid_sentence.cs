@@ -1,11 +1,11 @@
 /*---------------------------------------------------------------------------------------------
- *  Copyright (c) Dolittle. All rights reserved.
+ *  Copyright (c) RaaLabs. All rights reserved.
  *  Licensed under the MIT License. See LICENSE in the project root for license information.
  *--------------------------------------------------------------------------------------------*/
 using System;
 using Machine.Specifications;
 
-namespace Dolittle.TimeSeries.NMEA.for_SentenceParser.when_getting_identifier
+namespace RaaLabs.TimeSeries.NMEA.for_SentenceParser.when_getting_identifier
 {
     public class and_sentence_has_valid_sentence : given.no_formats
     {

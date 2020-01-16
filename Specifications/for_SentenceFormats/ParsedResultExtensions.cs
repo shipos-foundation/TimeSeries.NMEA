@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using Machine.Specifications;
 
-namespace Dolittle.TimeSeries.NMEA.for_SentenceFormats
+namespace RaaLabs.TimeSeries.NMEA.for_SentenceFormats
 {
     public static class ParsedResultExtensions
     {

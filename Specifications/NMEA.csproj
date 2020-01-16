@@ -4,7 +4,7 @@
 
   <PropertyGroup>
     <TargetFramework>netcoreapp2.1</TargetFramework>
-    <AssemblyName>Dolittle.TimeSeries.NMEA.Specs</AssemblyName>
+    <AssemblyName>RaaLabs.TimeSeries.NMEA.Specs</AssemblyName>
   </PropertyGroup>
 
   <ItemGroup>

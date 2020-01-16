@@ -64,7 +64,7 @@ In your `deployment.json` file, you will need to add the module. For more detail
 
 ```json
 "modules": {
-    "Dolittle.TimeSeries.NMEA": {
+    "RaaLabs.TimeSeries.NMEA": {
     "version": "1.0",
     "type": "docker",
     "status": "running",

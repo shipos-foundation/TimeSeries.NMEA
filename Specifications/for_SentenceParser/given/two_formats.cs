@@ -1,11 +1,11 @@
 /*---------------------------------------------------------------------------------------------
- *  Copyright (c) Dolittle. All rights reserved.
+ *  Copyright (c) RaaLabs. All rights reserved.
  *  Licensed under the MIT License. See LICENSE in the project root for license information.
  *--------------------------------------------------------------------------------------------*/
 using Machine.Specifications;
 using Moq;
 
-namespace Dolittle.TimeSeries.NMEA.for_SentenceParser.given
+namespace RaaLabs.TimeSeries.NMEA.for_SentenceParser.given
 {
     public class two_formats : all_dependencies
     {
