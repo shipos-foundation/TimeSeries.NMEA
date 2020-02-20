@@ -37,6 +37,15 @@ namespace RaaLabs.TimeSeries.NMEA.SentenceFormats
                         Value = longitude
                     }
                 }),
+                new ParsedResult("Latitude", new Measurement<float>
+                {
+                    Value = latitude
+                }),
+                new ParsedResult("Longitude", new Measurement<float>
+                {
+                    Value = longitude
+                })
+
             };
         }
 

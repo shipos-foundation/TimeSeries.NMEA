@@ -14,6 +14,7 @@ namespace RaaLabs.TimeSeries.NMEA.SentenceFormats
     public class RMC : ISentenceFormat
     {
 
+
         /// <inheritdoc/>
         public string Identitifer => "RMC";
 
@@ -37,6 +38,15 @@ namespace RaaLabs.TimeSeries.NMEA.SentenceFormats
                         Value = longitude
                     }
                 }),
+                new ParsedResult("Latitude", new Measurement<float>
+                {
+                    Value = latitude
+                }),
+                new ParsedResult("Longitude", new Measurement<float>
+                {
+                    Value = longitude
+                }),
+
                 new ParsedResult("SpeedOverGround", new Measurement<float>
                 {
                     Value = (float.Parse(values[6])*1852)/3600
