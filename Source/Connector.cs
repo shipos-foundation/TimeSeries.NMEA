@@ -140,7 +140,6 @@ namespace RaaLabs.TimeSeries.NMEA
                 var output = _parser.Parse(sentence);
                 var timestamp = Timestamp.UtcNow;
                 output.ForEach(_ => DataReceived($"{identifier}.{_.Tag}", _.Data, timestamp));
-                output.ForEach(_ => Console.WriteLine($"{identifier}.{_.Tag},{_.Data}, {timestamp})"));
             }
         }
     }
