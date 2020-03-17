@@ -17,13 +17,10 @@ namespace RaaLabs.TimeSeries.NMEA.SentenceFormats
         public string Identitifer => "HDT";
 
         /// <inheritdoc/>
-        public IEnumerable<ParsedResult> Parse(string[] values)
+        public IEnumerable<TagWithData> Parse(string[] values)
         {
             return new[] {
-                new ParsedResult("HeadingTrue", new Measurement<float>
-                {
-                    Value = float.Parse(values[0])
-                })
+                new TagWithData("HeadingTrue", float.Parse(values[0]))
             };
         }
     }

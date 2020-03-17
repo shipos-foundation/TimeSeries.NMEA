@@ -24,17 +24,13 @@ namespace RaaLabs.TimeSeries.NMEA.SentenceFormats
         public string Identitifer => "VBW";
 
         /// <inheritdoc/>
-        public IEnumerable<ParsedResult> Parse(string[] values)
+        public IEnumerable<TagWithData> Parse(string[] values)
         {
             foreach (var (index, name) in _tags)
             {
                 if (!string.IsNullOrEmpty(values[index]))
                 {
-                    yield return new ParsedResult(name, new Measurement<float>
-                    {
-                        Value = (float.Parse(values[index]) * 1852) / 3600
-
-                    });
+                    yield return new TagWithData(name, (float.Parse(values[index]) * 1852) / 3600);
                 }
             }
         }

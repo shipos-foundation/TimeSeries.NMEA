@@ -18,26 +18,24 @@ namespace RaaLabs.TimeSeries.NMEA.SentenceFormats
         public string Identitifer => "DPT";
 
         /// <inheritdoc/>
-        public IEnumerable<ParsedResult> Parse(string[] values)
+        public IEnumerable<TagWithData> Parse(string[] values)
         {
             var name = "WaterDepth";
             var waterDepthRelativeToTransducer = values[0];
             var offsetFromTransducer = values[1];
-
             if (!string.IsNullOrEmpty(waterDepthRelativeToTransducer))
             {
 
 
                 if (offsetFromTransducer.Contains("-"))
                 {
-                    name = "WaterDepthFromKeel";
+                    name = "DepthBelowKeel";
                 }
 
-                yield return new ParsedResult(name, new Measurement<float>
-                {
-                    Value = float.Parse(waterDepthRelativeToTransducer) + float.Parse(offsetFromTransducer)
+                yield return new TagWithData(name,
+                   float.Parse(waterDepthRelativeToTransducer) + float.Parse(offsetFromTransducer)
 
-                });
+                );
             }
 
 

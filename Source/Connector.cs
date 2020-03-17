@@ -138,7 +138,9 @@ namespace RaaLabs.TimeSeries.NMEA
             {
                 var identifier = _parser.GetIdentifierFor(sentence);
                 var output = _parser.Parse(sentence);
-                output.ForEach(_ => DataReceived($"{identifier}.{_.Type}", _.Result, Timestamp.UtcNow));
+                var timestamp = Timestamp.UtcNow;
+                output.ForEach(_ => DataReceived($"{identifier}.{_.Tag}", _.Data, timestamp));
+                output.ForEach(_ => Console.WriteLine($"{identifier}.{_.Tag},{_.Data}, {timestamp})"));
             }
         }
     }

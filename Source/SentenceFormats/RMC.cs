@@ -19,7 +19,7 @@ namespace RaaLabs.TimeSeries.NMEA.SentenceFormats
         public string Identitifer => "RMC";
 
         /// <inheritdoc/>
-        public IEnumerable<ParsedResult> Parse(string[] values)
+        public IEnumerable<TagWithData> Parse(string[] values)
         {
             var latitude = ConvertToDegree(values[2]);
             var longitude = ConvertToDegree(values[4]);
@@ -27,7 +27,7 @@ namespace RaaLabs.TimeSeries.NMEA.SentenceFormats
             if (values[5] == "W") longitude = -longitude;
 
             return new[] {
-                new ParsedResult("Position", new Coordinate
+                new TagWithData("Position", new Coordinate
                 {
                     Latitude = new Measurement<float>
                     {
@@ -38,19 +38,9 @@ namespace RaaLabs.TimeSeries.NMEA.SentenceFormats
                         Value = longitude
                     }
                 }),
-                new ParsedResult("Latitude", new Measurement<float>
-                {
-                    Value = latitude
-                }),
-                new ParsedResult("Longitude", new Measurement<float>
-                {
-                    Value = longitude
-                }),
-
-                new ParsedResult("SpeedOverGround", new Measurement<float>
-                {
-                    Value = (float.Parse(values[6])*1852)/3600
-                })
+                new TagWithData("Latitude", latitude),
+                new TagWithData("Longitude", longitude),
+                new TagWithData("SpeedOverGround", (float.Parse(values[6])*1852)/3600)
             };
         }
 

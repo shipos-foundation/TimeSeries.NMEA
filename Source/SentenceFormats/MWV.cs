@@ -17,7 +17,7 @@ namespace RaaLabs.TimeSeries.NMEA.SentenceFormats
         public string Identitifer => "MWV";
 
         /// <inheritdoc/>
-        public IEnumerable<ParsedResult> Parse(string[] values)
+        public IEnumerable<TagWithData> Parse(string[] values)
         {
             var windAngle = float.Parse(values[0]);
             var windSpeed = float.Parse(values[2]);
@@ -32,14 +32,8 @@ namespace RaaLabs.TimeSeries.NMEA.SentenceFormats
             if (values[3] == "N") windUnit = "WindForce";
 
             return new[] {
-                new ParsedResult(windAngleName, new Measurement<float>
-                {
-                    Value = windAngle
-                }),
-                new ParsedResult(windUnit, new Measurement<float>
-                {
-                    Value = windSpeed
-                })
+                new TagWithData(windAngleName, windAngle),
+                new TagWithData(windUnit, windSpeed)
             };
         }
     }

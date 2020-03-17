@@ -18,7 +18,7 @@ namespace RaaLabs.TimeSeries.NMEA.SentenceFormats
         public string Identitifer => "GLL";
 
         /// <inheritdoc/>
-        public IEnumerable<ParsedResult> Parse(string[] values)
+        public IEnumerable<TagWithData> Parse(string[] values)
         {
             var latitude = ConvertToDegree(values[0]);
             var longitude = ConvertToDegree(values[2]);
@@ -26,7 +26,7 @@ namespace RaaLabs.TimeSeries.NMEA.SentenceFormats
             if (values[3] == "W") longitude = -longitude;
 
             return new[] {
-                new ParsedResult("Position", new Coordinate
+                new TagWithData("Position", new Coordinate
                 {
                     Latitude = new Measurement<float>
                     {
@@ -37,14 +37,8 @@ namespace RaaLabs.TimeSeries.NMEA.SentenceFormats
                         Value = longitude
                     }
                 }),
-                new ParsedResult("Latitude", new Measurement<float>
-                {
-                    Value = latitude
-                }),
-                new ParsedResult("Longitude", new Measurement<float>
-                {
-                    Value = longitude
-                })
+                new TagWithData("Latitude", latitude),
+                new TagWithData("Longitude",longitude)
 
             };
         }

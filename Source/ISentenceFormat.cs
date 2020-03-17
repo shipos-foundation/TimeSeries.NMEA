@@ -22,6 +22,6 @@ namespace RaaLabs.TimeSeries.NMEA
         /// </summary>
         /// <param name="values">The values to parse</param>
         /// <returns>All the results</returns>
-        IEnumerable<ParsedResult> Parse(string[] values);
+        IEnumerable<TagWithData> Parse(string[] values);
     }
 }

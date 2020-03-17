@@ -31,6 +31,6 @@ namespace RaaLabs.TimeSeries.NMEA
         /// </summary>
         /// <param name="sentence">Sentence to parse</param>
         /// <returns>All the results parsed</returns>
-        IEnumerable<ParsedResult> Parse(string sentence);
+        IEnumerable<TagWithData> Parse(string sentence);
     }
 }

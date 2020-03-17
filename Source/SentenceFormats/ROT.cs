@@ -17,13 +17,10 @@ namespace RaaLabs.TimeSeries.NMEA.SentenceFormats
         public string Identitifer => "ROT";
 
         /// <inheritdoc/>
-        public IEnumerable<ParsedResult> Parse(string[] values)
+        public IEnumerable<TagWithData> Parse(string[] values)
         {
             return new[] {
-                new ParsedResult("RateOfTurn", new Measurement<float>
-                {
-                    Value = float.Parse(values[0])
-                })
+                new TagWithData("RateOfTurn", float.Parse(values[0]))
             };
         }
     }

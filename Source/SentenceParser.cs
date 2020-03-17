@@ -43,7 +43,7 @@ namespace RaaLabs.TimeSeries.NMEA
         }
 
         /// <inheritdoc/>
-        public IEnumerable<ParsedResult> Parse(string sentence)
+        public IEnumerable<TagWithData> Parse(string sentence)
         {            
             ThrowIfSentenceIsInvalid(sentence);
             var originalSentence = sentence;
