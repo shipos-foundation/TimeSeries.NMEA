@@ -21,12 +21,10 @@ namespace RaaLabs.TimeSeries.NMEA.for_SentenceParser.given
         Establish context = () => 
         {
             first_format = new Mock<ISentenceFormat>();
-            first_format.SetupGet(_ => _.Talker).Returns("GP");
             first_format.SetupGet(_ => _.Identitifer).Returns("RMC");
             actual_formats.Add(first_format.Object);
 
             second_format = new Mock<ISentenceFormat>();
-            second_format.SetupGet(_ => _.Talker).Returns("GP");
             second_format.SetupGet(_ => _.Identitifer).Returns("GGA");
             actual_formats.Add(second_format.Object);
 

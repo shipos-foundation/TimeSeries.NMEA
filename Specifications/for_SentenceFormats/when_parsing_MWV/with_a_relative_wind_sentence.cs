@@ -7,12 +7,15 @@ using Machine.Specifications;
 using RaaLabs.TimeSeries.NMEA.SentenceFormats;
 using System.Linq;
 
-namespace RaaLabs.TimeSeries.NMEA.for_SentenceFormats.when_parsing_HEHDT
+namespace RaaLabs.TimeSeries.NMEA.for_SentenceFormats.when_parsing_WIMWV
 {
-    public class with_a_valid_message : given.a_HEHDT_parser
+    public class with_a_relative_wind_sentence : given.a_MWV_parser
     {
-        static string[] values = new[] { "095345", "A", "0557.659", "N", "10732.647", "E", "16.8", "222.", "280619", "02.", "W" };
-        static ParsedResult[] results;
+        static string[] values = new[] { "325", "R", "018.3", "M" };
+        static TagWithData[] results;
         Because of = () => results = parser.Parse(values).ToArray();
+        It should_return_two_result = () => results.Length.ShouldEqual(2);
+        It should_return_a_relative_wind_angle = () => results.ShouldEmit("WindAngleRelative", 325f);
+        It should_return_a_relative_wind_speed = () => results.ShouldEmit("WindSpeedRelative", 18.3f);
     }
 }

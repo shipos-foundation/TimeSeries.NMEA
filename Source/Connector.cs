@@ -12,6 +12,7 @@ using Dolittle.Collections;
 using Dolittle.Logging;
 using RaaLabs.TimeSeries.Modules;
 using RaaLabs.TimeSeries.Modules.Connectors;
+using System.Collections.Generic;
 
 namespace RaaLabs.TimeSeries.NMEA
 {
@@ -25,21 +26,27 @@ namespace RaaLabs.TimeSeries.NMEA
         readonly ConnectorConfiguration _configuration;
         readonly ILogger _logger;
         readonly ISentenceParser _parser;
+        readonly State _state;
 
         /// <summary>
         /// Initializes a new instance of <see cref="Connector"/>
         /// </summary>
         /// <param name="configuration">The <see cref="ConnectorConfiguration">configuration</see></param>
+        /// <param name="state">The <see cref="State">state</see></param>
         /// <param name="parser"><see cref="ISentenceParser"/> for parsing the NMEA sentences</param>
         /// <param name="logger"><see cref="ILogger"/> for logging</param>
         public Connector(
             ConnectorConfiguration configuration,
+            State state,
             ISentenceParser parser,
             ILogger logger)
         {
             _configuration = configuration;
+            _state = state;
             _logger = logger;
             _parser = parser;
+
+            _state.StateChanged += StateChanged;
         }
 
         /// <inheritdoc/>
@@ -139,8 +146,28 @@ namespace RaaLabs.TimeSeries.NMEA
                 var identifier = _parser.GetIdentifierFor(sentence);
                 var output = _parser.Parse(sentence);
                 var timestamp = Timestamp.UtcNow;
-                output.ForEach(_ => DataReceived($"{identifier}.{_.Tag}", _.Data, timestamp));
+                output.ForEach(_ => _state.DataReceived(identifier, timestamp, _));
+                //output.ForEach(_ => ProcessTag(identifier, timestamp, _));
             }
         }
+
+        void StateChanged(TagWithData newData, Timestamp timestamp)
+        {
+            DataReceived(newData.Tag, newData.Data, timestamp);
+        }
+
+        /*
+        void ProcessTag(string identifier, Timestamp timestamp, TagWithData tagWithData)
+        {
+            var measurement = new Measurement
+            {
+                tagWithData = tagWithData,
+                timestamp = timestamp
+            };
+            var tag = $"{identifier}.{tagWithData.Tag}";
+            _measurements[tag] = measurement;
+            DataReceived($"{identifier}.{tagWithData.Tag}", tagWithData.Data, timestamp);
+        }
+        */
     }
 }

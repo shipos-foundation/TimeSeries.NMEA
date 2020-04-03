@@ -9,10 +9,10 @@ using System.Linq;
 
 namespace RaaLabs.TimeSeries.NMEA.for_SentenceFormats.when_parsing_VDVBW
 {
-    public class with_a_valid_messsage : given.a_VDVBW_parser
+    public class with_a_valid_messsage : given.a_VBW_parser
     {
         static string[] values = new[] { "001.00", "000.0", "A", "036.00", "000.00", "V" };
-        static ParsedResult[] results;
+        static TagWithData[] results;
         Because of = () => results = parser.Parse(values).ToArray();
         It should_return_four_result = () => results.Length.ShouldEqual(4);
         It should_return_a_longitudinal_speed_through_water = () => results.ShouldEmit("LongitudinalSpeedThroughWater", 0.5144445f);
