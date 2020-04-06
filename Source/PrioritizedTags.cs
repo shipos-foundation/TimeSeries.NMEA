@@ -9,7 +9,7 @@ namespace RaaLabs.TimeSeries.NMEA
     /// 
     /// </summary>
     [Name("prioritized")]
-    public class PrioritizedTags : ReadOnlyDictionary<string, List<SourcePriority>>, IConfigurationObject
+    public class PrioritizedTags : ReadOnlyDictionary<string, SourcePriority>, IConfigurationObject
     {
         /// <summary>
         /// 
@@ -18,15 +18,7 @@ namespace RaaLabs.TimeSeries.NMEA
         /// <summary>
         /// 
         /// </summary>
-        public PrioritizedTags(IDictionary<string, List<SourcePriority>> prioritized) : base(prioritized) {}
-
-        /*
-        private static Dictionary<string, List<SourcePriority>> InjectTagsToTalkers(IDictionary<string, List<SourcePriority>> source)
-        {
-            List<SourcePriority> injectTagToTalker(KeyValuePair<string, List<SourcePriority>> prioritiesForTag) => prioritiesForTag.Value.Select(talker => new SourcePriority($"{talker.Id}.{prioritiesForTag.Key}", talker.Threshold)).ToList();
-            return source.ToDictionary(tag => tag.Key, tag => injectTagToTalker(tag));
-        }
-        */
+        public PrioritizedTags(IDictionary<string, SourcePriority> priorities) : base(priorities) {}
     }
 
 
@@ -38,18 +30,19 @@ namespace RaaLabs.TimeSeries.NMEA
         /// <summary>
         /// 
         /// </summary>
-        /// <param name="id"></param>
+        /// <param name="priorities"></param>
         /// <param name="threshold"></param>
-        public SourcePriority(string id, long threshold)
+        public SourcePriority(List<string> priorities, long threshold)
         {
-            Id = id;
+
+            Priorities = priorities;
             Threshold = threshold;
         }
 
         /// <summary>
         /// 
         /// </summary>
-        public string Id { get; set; }
+        public List<string> Priorities { get; set; }
 
         /// <summary>
         /// 

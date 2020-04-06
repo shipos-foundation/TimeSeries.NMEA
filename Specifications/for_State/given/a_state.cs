@@ -11,10 +11,10 @@ namespace RaaLabs.TimeSeries.NMEA.for_State.given
     {
         protected static State state;
 
-        Establish context = () => state = new State(new PrioritizedTags(new Dictionary<string, List<SourcePriority>>()
+        Establish context = () => state = new State(new PrioritizedTags(new Dictionary<string, SourcePriority>()
         {
-            { "Longitude", new List<SourcePriority>() { new SourcePriority("GPGLL", 10000), new SourcePriority("GPRMC", 10000) } },
-            { "Latitude", new List<SourcePriority>() { new SourcePriority("GPGLL", 10000), new SourcePriority("GPRMC", 10000) } }
+            { "Longitude", new SourcePriority { Priorities = new List<string> { "GPGLL", "GPRMC" }, Threshold = 10000 } },
+            { "Latitude", new SourcePriority { Priorities = new List<string> { "GPGLL", "GPRMC" }, Threshold = 10000 } }
         }), logger);
     }
 }

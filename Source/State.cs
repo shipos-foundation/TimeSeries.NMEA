@@ -13,7 +13,7 @@ namespace RaaLabs.TimeSeries.NMEA
     {
         private Dictionary<string, Measurement> _state = new Dictionary<string, Measurement>();
         private Dictionary<string, int> _prioritiesForFullTags;
-        private Dictionary<string, long> _timeoutsForFullTags;
+        private Dictionary<string, long> _timeoutsForTags;
 
         private readonly ILogger _logger;
 
@@ -38,14 +38,11 @@ namespace RaaLabs.TimeSeries.NMEA
         {
             _logger = logger;
 
-            IEnumerable<(string, int)> talkerPrioritiesForTag(string tag, List<SourcePriority> talkerPriorities) =>
-                talkerPriorities.Select((talkerPriority, index) => ($"{tag}.{talkerPriority.Id}", index));
-
-            IEnumerable<(string, long)> talkerTimeoutForTag(string tag, List<SourcePriority> talkerPriorities) =>
-                talkerPriorities.Select((talkerPriority) => ($"{tag}.{talkerPriority.Id}", talkerPriority.Threshold));
+            IEnumerable<(string, int)> talkerPrioritiesForTag(string tag, SourcePriority talkerPriorities) =>
+                talkerPriorities.Priorities.Select((talkerPriority, index) => ($"{tag}.{talkerPriority}", index));
 
             _prioritiesForFullTags = prioritized.SelectMany(tag => talkerPrioritiesForTag(tag.Key, tag.Value)).ToDictionary(_ => _.Item1, _ => _.Item2);
-            _timeoutsForFullTags = prioritized.SelectMany(tag => talkerTimeoutForTag(tag.Key, tag.Value)).ToDictionary(_ => _.Item1, _ => _.Item2);
+            _timeoutsForTags = prioritized.ToDictionary(tag => tag.Key, tag => tag.Value.Threshold);
         }
 
         /// <summary>
@@ -66,13 +63,13 @@ namespace RaaLabs.TimeSeries.NMEA
                 tag = tagWithTalker
             };
 
+            long timeout = _timeoutsForTags.GetValueOrDefault(tag);
             bool hasCurrentState = _state.TryGetValue(tag, out Measurement currentState);
             long currentTimestamp = currentState?.timestamp ?? -1;
-            long currentTimeout = hasCurrentState ? _timeoutsForFullTags.GetValueOrDefault(currentState.tag, -1) : -1;
             int currentPriority = hasCurrentState ? _prioritiesForFullTags.GetValueOrDefault(currentState.tag, int.MaxValue) : int.MaxValue;
             int thisPriority = _prioritiesForFullTags.GetValueOrDefault(tagWithTalker, int.MaxValue);
             bool hasHigherPriority = thisPriority <= currentPriority;
-            bool currentStateStale = (timestamp - currentTimestamp) > currentTimeout;
+            bool currentStateStale = (timestamp - currentTimestamp) > timeout;
             bool shouldSetState = !hasCurrentState || hasHigherPriority || currentStateStale;
 
             bool hasOverlappingTalkersWithoutPriority = thisPriority == int.MaxValue && (hasCurrentState && !tagWithTalker.Equals(currentState.tag));
