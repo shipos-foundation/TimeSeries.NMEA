@@ -39,5 +39,6 @@ EXPOSE 5100/udp
 
 WORKDIR /app
 COPY --from=build-env /app/Source/out ./
+COPY --from=build-env /app/Source/data ./data
 
 ENTRYPOINT ["dotnet", "RaaLabs.TimeSeries.NMEA.dll"]
