@@ -9,13 +9,12 @@ using System.Linq;
 
 namespace RaaLabs.TimeSeries.NMEA.for_SentenceFormats.when_parsing_WIMWV
 {
-    public class with_a_relative_wind_sentence : given.a_WIMWV_parser
+    public class with_a_wind_force_sentence : given.a_MWV_parser
     {
-        static string[] values = new[] { "325", "R", "018.3", "M" };
-        static ParsedResult[] results;
+        static string[] values = new[] { "325", "T", "018.3", "N" };
+        static TagWithData[] results;
         Because of = () => results = parser.Parse(values).ToArray();
         It should_return_two_result = () => results.Length.ShouldEqual(2);
-        It should_return_a_relative_wind_angle = () => results.ShouldEmit("WindAngleRelative", 325f);
-        It should_return_a_relative_wind_speed = () => results.ShouldEmit("WindSpeedRelative", 18.3f);
+        It should_return_a_true_wind_speed = () => results.ShouldEmit("WindForce", 18.3f);
     }
 }

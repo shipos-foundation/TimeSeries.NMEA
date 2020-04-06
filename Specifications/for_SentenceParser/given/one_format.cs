@@ -18,7 +18,6 @@ namespace RaaLabs.TimeSeries.NMEA.for_SentenceParser.given
         Establish context = () => 
         {
             format = new Mock<ISentenceFormat>();
-            format.SetupGet(_ => _.Talker).Returns("GP");
             format.SetupGet(_ => _.Identitifer).Returns("RMC");
             actual_formats.Add(format.Object);
             sentence_parser = new SentenceParser(sentence_formats.Object);

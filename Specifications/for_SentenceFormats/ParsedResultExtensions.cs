@@ -7,12 +7,11 @@ namespace RaaLabs.TimeSeries.NMEA.for_SentenceFormats
 {
     public static class ParsedResultExtensions
     {
-        public static void ShouldEmit<T>(this IEnumerable<ParsedResult> results, string type, T value)
+        public static void ShouldEmit<T>(this IEnumerable<TagWithData> results, string type, T value)
         {
-            if (!results.Any(_ => _.Type == type &&
-                            ((Measurement<T>)_.Result).Value.Equals(value)))
+            if (!results.Any(_ => _.Tag == type && _.Data.Equals(value)))
             {
-                throw new SpecificationException($"Expected {type} with {value} to be emited");
+                throw new SpecificationException($"Expected {type} with {value} to be emitted");
             }
         }
     }

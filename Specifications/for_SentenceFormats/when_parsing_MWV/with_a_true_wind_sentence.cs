@@ -9,10 +9,10 @@ using System.Linq;
 
 namespace RaaLabs.TimeSeries.NMEA.for_SentenceFormats.when_parsing_WIMWV
 {
-    public class with_a_true_wind_sentence : given.a_WIMWV_parser
+    public class with_a_true_wind_sentence : given.a_MWV_parser
     {
         static string[] values = new[] { "325", "T", "018.3", "M" };
-        static ParsedResult[] results;
+        static TagWithData[] results;
         Because of = () => results = parser.Parse(values).ToArray();
         It should_return_two_result = () => results.Length.ShouldEqual(2);
         It should_return_a_relative_wind_angle = () => results.ShouldEmit("WindAngleTrue", 325f);

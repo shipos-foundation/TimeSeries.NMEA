@@ -2,15 +2,15 @@
  *  Copyright (c) RaaLabs. All rights reserved.
  *  Licensed under the MIT License. See LICENSE in the project root for license information.
  *--------------------------------------------------------------------------------------------*/
-using System.Linq;
+using System.Collections.Generic;
 using RaaLabs.TimeSeries.NMEA.SentenceFormats;
 using Machine.Specifications;
 
 namespace RaaLabs.TimeSeries.NMEA.for_SentenceFormats.given
 {
-    public class a_VDVBW_parser
+    public class a_MWV_parser
     {
-        protected static VDVBW parser;
-        Establish context = () => parser = new VDVBW();
+        protected static MWV parser;
+        Establish context = () => parser = new MWV();
     }
 }

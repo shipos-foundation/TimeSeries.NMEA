@@ -8,9 +8,9 @@ using Machine.Specifications;
 
 namespace RaaLabs.TimeSeries.NMEA.for_SentenceFormats.given
 {
-    public class a_HEHDT_parser
+    public class a_VBW_parser
     {
-        protected static HEHDT parser;
-        Establish context = () => parser = new HEHDT();
+        protected static VBW parser;
+        Establish context = () => parser = new VBW();
     }
 }

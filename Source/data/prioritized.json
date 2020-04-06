@@ -1,0 +1,30 @@
+{
+    "Longitude": {
+        "priority": [
+            "GPRMC",
+            "GPGLL"
+        ],
+        "threshold": 10000
+    },
+    "Latitude": {
+        "priority": [
+            "GPRMC",
+            "GPGLL"
+        ],
+        "threshold": 10000
+    },
+    "Position": {
+        "priority": [
+            "GPRMC",
+            "GPGLL"
+        ],
+        "threshold": 10000
+    },
+    "SpeedOverGround": {
+        "priority": [
+            "GPRMC",
+            "GPVTG"
+        ],
+        "threshold": 10000
+    }
+}
