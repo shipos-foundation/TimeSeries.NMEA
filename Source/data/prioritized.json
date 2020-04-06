@@ -1,0 +1,42 @@
+{
+    "Longitude": [
+        {
+            "id": "GPRMC",
+            "threshold": 10000
+        },
+        {
+            "id": "GPGLL",
+            "threshold": 10000
+        }
+    ],
+    "Latitude": [
+        {
+            "id": "GPRMB",
+            "threshold": 10000
+        },
+        {
+            "id": "GPGLL",
+            "threshold": 10000
+        }
+    ],
+    "Position": [
+        {
+            "id": "GPRMC",
+            "threshold": 10000
+        },
+        {
+            "id": "GPGLL",
+            "threshold": 10000
+        }
+    ],
+    "SpeedOverGround": [
+        {
+            "id": "GPRMC",
+            "threshold": 10000
+        },
+        {
+            "id": "GPVTG",
+            "threshold": 10000
+        }
+    ]
+}
