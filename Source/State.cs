@@ -84,6 +84,7 @@ namespace RaaLabs.TimeSeries.NMEA
 
             if (shouldSetState)
             {
+                _logger.Information($"{talker} set {tag} to {tagWithData.Data}");
                 _state[tag] = measurement;
                 StateChanged.Invoke(tagWithData, timestamp);
             }
