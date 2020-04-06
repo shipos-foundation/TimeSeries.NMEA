@@ -13,8 +13,8 @@ namespace RaaLabs.TimeSeries.NMEA.for_State.given
 
         Establish context = () => state = new State(new PrioritizedTags(new Dictionary<string, SourcePriority>()
         {
-            { "Longitude", new SourcePriority { Priorities = new List<string> { "GPGLL", "GPRMC" }, Threshold = 10000 } },
-            { "Latitude", new SourcePriority { Priorities = new List<string> { "GPGLL", "GPRMC" }, Threshold = 10000 } }
+            { "Longitude", new SourcePriority { Priority = new List<string> { "GPGLL", "GPRMC" }, Threshold = 10000 } },
+            { "Latitude", new SourcePriority { Priority = new List<string> { "GPGLL", "GPRMC" }, Threshold = 10000 } }
         }), logger);
     }
 }

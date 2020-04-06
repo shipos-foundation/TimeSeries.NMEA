@@ -39,7 +39,7 @@ namespace RaaLabs.TimeSeries.NMEA
             _logger = logger;
 
             IEnumerable<(string, int)> talkerPrioritiesForTag(string tag, SourcePriority talkerPriorities) =>
-                talkerPriorities.Priorities.Select((talkerPriority, index) => ($"{tag}.{talkerPriority}", index));
+                talkerPriorities.Priority.Select((talkerPriority, index) => ($"{tag}.{talkerPriority}", index));
 
             _prioritiesForFullTags = prioritized.SelectMany(tag => talkerPrioritiesForTag(tag.Key, tag.Value)).ToDictionary(_ => _.Item1, _ => _.Item2);
             _timeoutsForTags = prioritized.ToDictionary(tag => tag.Key, tag => tag.Value.Threshold);
@@ -60,23 +60,23 @@ namespace RaaLabs.TimeSeries.NMEA
             {
                 tagWithData = tagWithData,
                 timestamp = timestamp,
-                tag = tagWithTalker
+                source = tagWithTalker
             };
 
             long timeout = _timeoutsForTags.GetValueOrDefault(tag);
             bool hasCurrentState = _state.TryGetValue(tag, out Measurement currentState);
             long currentTimestamp = currentState?.timestamp ?? -1;
-            int currentPriority = hasCurrentState ? _prioritiesForFullTags.GetValueOrDefault(currentState.tag, int.MaxValue) : int.MaxValue;
+            int currentPriority = hasCurrentState ? _prioritiesForFullTags.GetValueOrDefault(currentState.source, int.MaxValue) : int.MaxValue;
             int thisPriority = _prioritiesForFullTags.GetValueOrDefault(tagWithTalker, int.MaxValue);
             bool hasHigherPriority = thisPriority <= currentPriority;
             bool currentStateStale = (timestamp - currentTimestamp) > timeout;
             bool shouldSetState = !hasCurrentState || hasHigherPriority || currentStateStale;
 
-            bool hasOverlappingTalkersWithoutPriority = thisPriority == int.MaxValue && (hasCurrentState && !tagWithTalker.Equals(currentState.tag));
+            bool hasOverlappingTalkersWithoutPriority = thisPriority == int.MaxValue && (hasCurrentState && !tagWithTalker.Equals(currentState.source));
             
             if(hasOverlappingTalkersWithoutPriority)
             {
-                _logger.Information($"{tagWithTalker} is not configured with a priority, despite {currentState.tag} also being a source for this tag.");
+                _logger.Information($"{tagWithTalker} is not configured with a priority, despite {currentState.source} also being a source for this tag.");
             }
 
             if (shouldSetState)
@@ -88,24 +88,24 @@ namespace RaaLabs.TimeSeries.NMEA
         }
 
         /// <summary>
-        /// 
+        /// A state data point at a certain time
         /// </summary>
         public class Measurement
         {
             /// <summary>
-            /// 
+            /// The measurement
             /// </summary>
             public TagWithData tagWithData;
 
             /// <summary>
-            /// 
+            /// The timestamp for the measurement
             /// </summary>
             public Timestamp timestamp;
 
             /// <summary>
-            /// 
+            /// The source for the measurement, e.g. "Latitude.GPRPC"
             /// </summary>
-            public string tag;
+            public string source;
         }
     }
 }
