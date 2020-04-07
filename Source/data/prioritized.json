@@ -28,15 +28,23 @@
     },
     "GPSsatelites": {
         "priority": [
-            "GPGNS"
+            "GPGNS",
+            "GPGGA"
         ],
         "threshold": 60000
     },
+    "HDOP": {
+        "priority": [
+            "GPGNS",
+            "GPGGA"
+        ],
+        "threshold": 60000
+    },    
     "SpeedOverGround": {
         "priority": [
+            "GPVTG",
             "GPRMC",
             "GPRMA",
-            "GPVTG",
             "SDVTG"
         ],
         "threshold": 60000
@@ -45,12 +53,14 @@
         "priority": [
             "VDVHW",
             "VDVBW",
+            "GPVHW",
+            "GPVBW",
             "VWVHW",
             "VWVBW"
         ],
         "threshold": 60000
     },
-    "HeadingTrueMagnetic": {
+    "HeadingMagnetic": {
         "priority": [
             "HCHDG",
             "HCHDM",
@@ -61,10 +71,14 @@
         ],
         "threshold": 60000
     },
-    "HeadingTrueGyro": {
+    "HeadingTrue": {
         "priority": [
             "HEHDT",
-            "HEVHW"
+            "HEVHW",
+            "GPHDT",
+            "GPVHW",
+            "SDHDT",
+            "SDVHW"
         ],
         "threshold": 60000
     },
