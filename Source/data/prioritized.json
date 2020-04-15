@@ -19,6 +19,16 @@
         ],
         "threshold": 60000
     },
+    "Position": {
+        "priority": [
+            "GPGGA",
+            "GPGLL",
+            "GPGNS",
+            "GPRMC",
+            "GPRMA"
+        ],
+        "threshold": 60000
+    },
     "RateOfTurn": {
         "priority": [
             "HEROT",
