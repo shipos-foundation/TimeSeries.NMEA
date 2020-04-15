@@ -20,14 +20,19 @@ namespace RaaLabs.TimeSeries.NMEA.SentenceFormats
         /// <inheritdoc/>
         public IEnumerable<TagWithData> Parse(string[] values)
         {
-            return new[] {
-                new TagWithData("HeadingTrue", float.Parse(values[0])),
-                new TagWithData("HeadingMagnetic", float.Parse(values[2])),
-                new TagWithData("SpeedThroughWater", (float.Parse(values[4])*1852)/3600)
-            };
+            var headingTrue = values[0];
+            var headingMagnetic = values[2];
+            var speedThroughWater = values[4];
+
+            if(ValidSentence(headingTrue)) yield return  new TagWithData("HeadingTrue", float.Parse(headingTrue));
+            if(ValidSentence(headingMagnetic)) yield return  new TagWithData("HeadingMagnetic", float.Parse(headingMagnetic));
+            if(ValidSentence(speedThroughWater)) yield return  new TagWithData("SpeedThroughWater", (float.Parse(speedThroughWater)*1852)/3600);
         }
 
-
+        private bool ValidSentence(string value)
+        {
+            return !string.IsNullOrEmpty(value);
+        }
 
     }
 }

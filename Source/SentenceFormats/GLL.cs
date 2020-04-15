@@ -20,27 +20,47 @@ namespace RaaLabs.TimeSeries.NMEA.SentenceFormats
         /// <inheritdoc/>
         public IEnumerable<TagWithData> Parse(string[] values)
         {
-            var latitude = ConvertToDegree(values[0]);
-            var longitude = ConvertToDegree(values[2]);
-            if (values[1] == "S") latitude = -latitude;
-            if (values[3] == "W") longitude = -longitude;
 
-            return new[] {
-                new TagWithData("Position", new Coordinate
+            var latitude = values[0];
+            var longitude = values[2];
+            var cardinalDirectionY = values[1];
+            var cardinalDirectionX = values[3];
+
+            if (ValidSentence(latitude) && ValidSentence(cardinalDirectionY))
+            {
+                var latitudeDeg = ConvertToDegree(latitude);
+                if (cardinalDirectionY == "S") latitudeDeg = -latitudeDeg;
+                yield return new TagWithData("Latitude", latitudeDeg);
+
+            }
+            if (ValidSentence(longitude) && ValidSentence(cardinalDirectionX))
+            {
+                var longitudeDeg = ConvertToDegree(longitude);
+                if (cardinalDirectionX == "W") longitudeDeg = -longitudeDeg;
+                yield return new TagWithData("Longitude", longitudeDeg);
+            }
+
+            if (ValidSentence(latitude) && ValidSentence(cardinalDirectionY) && ValidSentence(longitude) && ValidSentence(cardinalDirectionX))
+            {
+                var latitudeDeg = ConvertToDegree(latitude);
+                var longitudeDeg = ConvertToDegree(longitude);
+
+                if (cardinalDirectionY == "S") latitudeDeg = -latitudeDeg;
+                if (cardinalDirectionX == "W") longitudeDeg = -longitudeDeg;
+
+                yield return new TagWithData("Position", new Coordinate
                 {
                     Latitude = new Measurement<float>
                     {
-                        Value = latitude
+                        Value = latitudeDeg
                     },
                     Longitude = new Measurement<float>
                     {
-                        Value = longitude
+                        Value = longitudeDeg
                     }
-                }),
-                new TagWithData("Latitude", latitude),
-                new TagWithData("Longitude",longitude)
+                });
 
-            };
+            }
         }
 
         private float ConvertToDegree(string value)
@@ -51,6 +71,10 @@ namespace RaaLabs.TimeSeries.NMEA.SentenceFormats
             var result = float.Parse(_degree) + float.Parse(_decimal) / 60;
 
             return result;
+        }
+        private bool ValidSentence(string value)
+        {
+            return !string.IsNullOrEmpty(value);
         }
 
     }

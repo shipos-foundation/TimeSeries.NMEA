@@ -19,8 +19,9 @@ namespace RaaLabs.TimeSeries.NMEA.SentenceFormats
         /// <inheritdoc/>
         public IEnumerable<TagWithData> Parse(string[] values)
         {
-            var windAngle = float.Parse(values[0]);
-            var windSpeed = float.Parse(values[2]);
+            var windAngle = values[0];
+            var windSpeed = values[2];
+
             var windAngleName = "WindAngleTrue";
             var windUnit = "WindSpeedTrue";
             if (values[1] == "R")
@@ -28,13 +29,20 @@ namespace RaaLabs.TimeSeries.NMEA.SentenceFormats
                 windAngleName = "WindAngleRelative";
                 windUnit = "WindSpeedRelative";
             }
-            if (values[3] == "K") windSpeed = (windSpeed * 1852) / 3600;
-            if (values[3] == "N") windUnit = "WindForce";
 
-            return new[] {
-                new TagWithData(windAngleName, windAngle),
-                new TagWithData(windUnit, windSpeed)
-            };
+
+            if (ValidSentence(windAngle)) yield return new TagWithData(windAngleName, float.Parse(windAngle));
+            if (ValidSentence(windSpeed))
+            {
+                var windSpeedValue = float.Parse(windSpeed);
+                if (values[3] == "K") windSpeedValue = (windSpeedValue * 1852) / 3600;
+                if (values[3] == "N") windUnit = "WindForce";
+                yield return new TagWithData(windUnit, windSpeedValue);
+            }
+        }
+        private bool ValidSentence(string value)
+        {
+            return !string.IsNullOrEmpty(value);
         }
     }
 }

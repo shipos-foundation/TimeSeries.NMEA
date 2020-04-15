@@ -13,26 +13,26 @@ namespace RaaLabs.TimeSeries.NMEA.SentenceFormats
     /// </summary>
     public class VBW : ISentenceFormat
     {
-        static readonly Dictionary<int, string> _tags = new Dictionary<int, string>()
-                                      {
-                                          {0,"LongitudinalSpeedThroughWater"},
-                                          {1, "TransverseSpeedThroughWater"},
-                                          {3,"LongitudinalSpeedOverGround"},
-                                          {4,"TransverseSpeedOverGround"}
-                                      };
         /// <inheritdoc/>
         public string Identitifer => "VBW";
 
         /// <inheritdoc/>
         public IEnumerable<TagWithData> Parse(string[] values)
         {
-            foreach (var (index, name) in _tags)
-            {
-                if (!string.IsNullOrEmpty(values[index]))
-                {
-                    yield return new TagWithData(name, (float.Parse(values[index]) * 1852) / 3600);
-                }
-            }
+            var longitudinalSpeedThroughWater = values[0];
+            var transverseSpeedThroughWater = values[1];
+            var longitudinalSpeedOverGround = values[3];
+            var transverseSpeedOverGround = values[4];
+
+            if (ValidSentence(longitudinalSpeedThroughWater)) yield return new TagWithData("LongitudinalSpeedThroughWater", (float.Parse(longitudinalSpeedThroughWater) * 1852) / 3600);
+            if (ValidSentence(transverseSpeedThroughWater)) yield return new TagWithData("TransverseSpeedThroughWater", (float.Parse(transverseSpeedThroughWater) * 1852) / 3600);
+            if (ValidSentence(longitudinalSpeedOverGround)) yield return new TagWithData("LongitudinalSpeedOverGround", (float.Parse(longitudinalSpeedOverGround) * 1852) / 3600);
+            if (ValidSentence(transverseSpeedOverGround)) yield return new TagWithData("TransverseSpeedOverGround", (float.Parse(transverseSpeedOverGround) * 1852) / 3600);
+
+        }
+        private bool ValidSentence(string value)
+        {
+            return !string.IsNullOrEmpty(value);
         }
     }
 }

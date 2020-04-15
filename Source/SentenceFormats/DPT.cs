@@ -23,10 +23,9 @@ namespace RaaLabs.TimeSeries.NMEA.SentenceFormats
             var name = "WaterDepth";
             var waterDepthRelativeToTransducer = values[0];
             var offsetFromTransducer = values[1];
-            if (!string.IsNullOrEmpty(waterDepthRelativeToTransducer))
+
+            if (ValidSentence(waterDepthRelativeToTransducer))
             {
-
-
                 if (offsetFromTransducer.Contains("-"))
                 {
                     name = "DepthBelowKeel";
@@ -34,11 +33,12 @@ namespace RaaLabs.TimeSeries.NMEA.SentenceFormats
 
                 yield return new TagWithData(name,
                    float.Parse(waterDepthRelativeToTransducer) + float.Parse(offsetFromTransducer)
-
                 );
             }
-
-
+        }
+        private bool ValidSentence(string value)
+        {
+            return !string.IsNullOrEmpty(value);
         }
     }
 }

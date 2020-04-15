@@ -18,16 +18,21 @@ namespace RaaLabs.TimeSeries.NMEA.SentenceFormats
         public string Identitifer => "VTG";
 
         /// <inheritdoc/>
+
         public IEnumerable<TagWithData> Parse(string[] values)
         {
-            return new[] {
-                new TagWithData("CourseOverGroundTrue", float.Parse(values[0])),
-                new TagWithData("CourseOverGroundMagnetic", float.Parse(values[2])),
-                new TagWithData("SpeedOverGround", (float.Parse(values[4])*1852)/3600)
-            };
+            var courseOverGroundTrue = values[0];
+            var courseOverGroundMagnetic = values[2];
+            var speedOverGround = values[4];
+
+            if (ValidSentence(courseOverGroundTrue)) yield return new TagWithData("CourseOverGroundTrue", float.Parse(courseOverGroundTrue));
+            if (ValidSentence(courseOverGroundMagnetic)) yield return new TagWithData("CourseOverGroundMagnetic", float.Parse(courseOverGroundMagnetic));
+            if (ValidSentence(speedOverGround)) yield return new TagWithData("SpeedOverGround", (float.Parse(speedOverGround) * 1852) / 3600);
         }
 
-
-
+        private bool ValidSentence(string value)
+        {
+            return !string.IsNullOrEmpty(value);
+        }
     }
 }

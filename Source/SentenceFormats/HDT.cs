@@ -19,9 +19,16 @@ namespace RaaLabs.TimeSeries.NMEA.SentenceFormats
         /// <inheritdoc/>
         public IEnumerable<TagWithData> Parse(string[] values)
         {
-            return new[] {
-                new TagWithData("HeadingTrue", float.Parse(values[0]))
-            };
+
+            var headingTrue = values[0];
+
+            if (ValidSentence(headingTrue)) yield return new TagWithData("HeadingTrue", float.Parse(headingTrue));
+
+        }
+
+        private bool ValidSentence(string value)
+        {
+            return !string.IsNullOrEmpty(value);
         }
     }
 }

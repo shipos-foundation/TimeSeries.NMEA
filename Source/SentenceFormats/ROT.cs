@@ -12,16 +12,22 @@ namespace RaaLabs.TimeSeries.NMEA.SentenceFormats
     /// </summary>
     public class ROT : ISentenceFormat
     {
-    
+
         /// <inheritdoc/>
         public string Identitifer => "ROT";
 
         /// <inheritdoc/>
         public IEnumerable<TagWithData> Parse(string[] values)
         {
-            return new[] {
-                new TagWithData("RateOfTurn", float.Parse(values[0]))
-            };
+
+            var rateOfTurn = values[0];
+
+            if (ValidSentence(rateOfTurn)) yield return new TagWithData("RateOfTurn", float.Parse(rateOfTurn));
+        }
+
+        private bool ValidSentence(string value)
+        {
+            return !string.IsNullOrEmpty(value);
         }
     }
 }
