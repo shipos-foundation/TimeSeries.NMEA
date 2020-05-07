@@ -89,8 +89,15 @@ namespace RaaLabs.TimeSeries.NMEA
                                     {
                                         skip = true;
                                         var sentence = sentenceBuilder.ToString();
-                                        ParseSentence(sentence);
                                         sentenceBuilder = new StringBuilder();
+                                        try
+                                        {
+                                            ParseSentence(sentence);
+                                        }
+                                        catch (InvalidSentence ex)
+                                        {
+                                            _logger.Error(ex, "Unable to parse sentence");
+                                        }
                                     }
                                     break;
                             }
