@@ -31,9 +31,17 @@ namespace RaaLabs.TimeSeries.NMEA.SentenceFormats
                     name = "DepthBelowKeel";
                 }
 
-                yield return new TagWithData(name,
-                   float.Parse(waterDepthRelativeToTransducer) + float.Parse(offsetFromTransducer)
-                );
+                bool waterDepthParsed = float.TryParse(waterDepthRelativeToTransducer, out float waterDepth);
+                bool offsetParsed = float.TryParse(offsetFromTransducer, out float offset);
+
+                if (waterDepthParsed && offsetParsed)
+                {
+                    yield return new TagWithData(name, waterDepth + offset);
+                }
+                else
+                {
+                    throw new InvalidSentence($"DPT: Unable to parse '{waterDepthRelativeToTransducer}' and/or '{offsetFromTransducer}'");
+                }
             }
         }
         private bool ValidSentence(string value)
