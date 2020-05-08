@@ -66,9 +66,10 @@ namespace RaaLabs.TimeSeries.NMEA
         {
             while (true)
             {
+                TcpClient client = null;
                 try
                 {
-                    var client = new TcpClient(_configuration.Ip, _configuration.Port);
+                    client = new TcpClient(_configuration.Ip, _configuration.Port);
                     using (var stream = client.GetStream())
                     {
                         var started = false;
@@ -108,6 +109,7 @@ namespace RaaLabs.TimeSeries.NMEA
                 }
                 catch (Exception ex)
                 {
+                    client?.Close();
                     _logger.Error(ex, "Error while connecting to TCP stream");
                     Thread.Sleep(2000);
                 }
