@@ -130,7 +130,14 @@ namespace RaaLabs.TimeSeries.NMEA
                                 var sentenceBuilder = new StringBuilder();
                                 var bytes = listener.Receive(ref groupEP);
                                 var sentence = Encoding.ASCII.GetString(bytes, 0, bytes.Length);
-                                ParseSentence(sentence);
+                                try
+                                {
+                                    ParseSentence(sentence);
+                                }
+                                catch (InvalidSentence ex)
+                                {
+                                    _logger.Error(ex, "Unable to parse sentence");
+                                }
                             }
                         }
                         catch (SocketException ex)
