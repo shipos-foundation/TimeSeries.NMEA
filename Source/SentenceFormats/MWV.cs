@@ -35,8 +35,8 @@ namespace RaaLabs.TimeSeries.NMEA.SentenceFormats
             if (ValidSentence(windSpeed))
             {
                 var windSpeedValue = float.Parse(windSpeed);
-                if (values[3] == "K") windSpeedValue = (windSpeedValue * 1852) / 3600;
-                if (values[3] == "N") windUnit = "WindForce";
+                if (values[3] == "K") windSpeedValue = (windSpeedValue * 1000) / 3600;
+                if (values[3] == "N") windSpeedValue = (windSpeedValue * 1852) / 3600;
                 yield return new TagWithData(windUnit, windSpeedValue);
             }
         }
