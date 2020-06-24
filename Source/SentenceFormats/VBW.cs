@@ -5,6 +5,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using RaaLabs.TimeSeries.DataTypes;
+using System;
 
 namespace RaaLabs.TimeSeries.NMEA.SentenceFormats
 {
@@ -28,7 +29,11 @@ namespace RaaLabs.TimeSeries.NMEA.SentenceFormats
             if (ValidSentence(transverseSpeedThroughWater)) yield return new TagWithData("TransverseSpeedThroughWater", (float.Parse(transverseSpeedThroughWater) * 1852) / 3600);
             if (ValidSentence(longitudinalSpeedOverGround)) yield return new TagWithData("LongitudinalSpeedOverGround", (float.Parse(longitudinalSpeedOverGround) * 1852) / 3600);
             if (ValidSentence(transverseSpeedOverGround)) yield return new TagWithData("TransverseSpeedOverGround", (float.Parse(transverseSpeedOverGround) * 1852) / 3600);
-
+            if ((ValidSentence(longitudinalSpeedThroughWater)) && (ValidSentence(transverseSpeedThroughWater)))
+            {
+                var speedThroughWater = Math.Sqrt(Math.Pow(float.Parse(longitudinalSpeedThroughWater), 2) + Math.Pow(float.Parse(transverseSpeedThroughWater), 2));
+                yield return new TagWithData("SpeedThroughWater", (speedThroughWater * 1852) / 3600);
+            }
         }
         private bool ValidSentence(string value)
         {
