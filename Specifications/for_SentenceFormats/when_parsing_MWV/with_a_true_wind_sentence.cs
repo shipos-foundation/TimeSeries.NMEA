@@ -7,7 +7,7 @@ using Machine.Specifications;
 using RaaLabs.TimeSeries.NMEA.SentenceFormats;
 using System.Linq;
 
-namespace RaaLabs.TimeSeries.NMEA.for_SentenceFormats.when_parsing_WIMWV
+namespace RaaLabs.TimeSeries.NMEA.for_SentenceFormats.when_parsing_MWV
 {
     public class with_a_true_wind_sentence : given.a_MWV_parser
     {
@@ -15,7 +15,7 @@ namespace RaaLabs.TimeSeries.NMEA.for_SentenceFormats.when_parsing_WIMWV
         static TagWithData[] results;
         Because of = () => results = parser.Parse(values).ToArray();
         It should_return_two_result = () => results.Length.ShouldEqual(2);
-        It should_return_a_relative_wind_angle = () => results.ShouldEmit("WindAngleTrue", 325f);
-        It should_return_a_relative_wind_speed = () => results.ShouldEmit("WindSpeedTrue", 18.3f);
+        It should_return_a_true_wind_angle = () => results.ShouldEmit("WindAngleTrue", 325f);
+        It should_return_a_true_wind_speed = () => results.ShouldEmit("WindSpeedTrue", 18.3f);
     }
 }
