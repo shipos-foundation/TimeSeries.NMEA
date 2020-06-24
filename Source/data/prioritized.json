@@ -36,7 +36,7 @@
         ],
         "threshold": 60000
     },
-    "GPSsatelites": {
+    "GPSsatellites": {
         "priority": [
             "GPGNS",
             "GPGGA"

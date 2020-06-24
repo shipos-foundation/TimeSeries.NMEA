@@ -25,10 +25,10 @@ namespace RaaLabs.TimeSeries.NMEA.SentenceFormats
             var longitude = values[3];
             var cardinalDirectionY = values[2];
             var cardinalDirectionX = values[4];
-            var gpsSatelites = values[6];
+            var gpsSatellites = values[6];
             var hdop = values[7];
 
-            if (ValidSentence(gpsSatelites)) yield return new TagWithData("GPSsatelites", float.Parse(gpsSatelites));
+            if (ValidSentence(gpsSatellites)) yield return new TagWithData("GPSsatellites", float.Parse(gpsSatellites));
             if (ValidSentence(hdop)) yield return new TagWithData("HDOP", float.Parse(hdop));
 
             if (ValidSentence(latitude) && ValidSentence(cardinalDirectionY))
