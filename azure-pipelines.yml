@@ -1,21 +1,22 @@
 trigger:
 - master
 
-pool:
-  vmImage: 'ubuntu-latest'
+jobs:
+  - job: "DotNet"
+    pool: Default
 
-variables:
-  buildConfiguration: 'Release'
+    steps:
+    - checkout: self
+      submodules: recursive
 
-steps:
-- bash: dotnet restore --no-cache --verbosity normal
-  displayName: Restore
+    - bash: dotnet restore --no-cache --verbosity normal
+      displayName: Restore
 
-- bash: dotnet build --no-restore --configuration Release
-  displayName: Build
-  
-- bash: dotnet test --configuration Release --no-build
-  displayName: Test
+    - bash: dotnet build --no-restore --configuration Release
+      displayName: Build
+
+    - bash: dotnet test --configuration Release --no-build
+      displayName: Test
 
 
 
