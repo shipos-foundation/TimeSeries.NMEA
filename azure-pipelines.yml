@@ -6,25 +6,36 @@ pool:
 
 variables:
   buildConfiguration: "Release"
+  imageName: "shipos/timeseries-nmea"
+  
 
-jobs:
-  - job: "DotNet"
-    steps:
-    - checkout: self
-      submodules: recursive
+stages:
+  - stage: Build
+    jobs:
+      - job: "DotNet"
+        steps:
+        - checkout: self
+          submodules: recursive
 
-    - bash: dotnet restore --no-cache --verbosity normal
-      displayName: Restore
+        - bash: dotnet restore --no-cache --verbosity normal
+          displayName: Restore
 
-    - bash: dotnet build --no-restore --configuration Release
-      displayName: Build
+        - bash: dotnet build --no-restore --configuration Release
+          displayName: Build
 
-    - bash: dotnet test --configuration Release --no-build
-      displayName: Test
+        - bash: dotnet test --configuration Release --no-build
+          displayName: Test
 
-  - job: "DockerBuild"
-    steps:
-    - bash: docker build --no-cache -f ./Source/Dockerfile -t shipos/timeseries-nmea:$(tag) . --build-arg CONFIGURATION="Release"
+      - job: "DockerBuild"
+        steps:
+        - script: versionTag=$(git tag --sort=-version:refname | head -1)
+        - bash: docker build --no-cache -f ./Source/Dockerfile -t $(imageName):$(versionTag) . --build-arg CONFIGURATION="Release"
+  - stage: Push
+    jobs:
+      - job: "DockerPush"
+        steps:
+        - bash: echo "$(imageName):$(versionTag)"
+
 
 
 
