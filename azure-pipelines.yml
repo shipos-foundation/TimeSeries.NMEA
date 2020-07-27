@@ -27,7 +27,8 @@ stages:
 
       - job: "DockerBuild"
         steps:
-        - script: export versionTag=$(git tag --sort=-version:refname | head -1)
+        - script: versionTag=`git describe --tags` && echo "##vso[task.setvariable variable=versionTag]$versionTag"
+          displayName: Set the tag name as an environment variable
         - bash: echo "$(imageName):$(versionTag)"
         - bash: docker build --no-cache -f ./Source/Dockerfile -t $(imageName):$(versionTag) . --build-arg CONFIGURATION="Release"
   - stage: Push
