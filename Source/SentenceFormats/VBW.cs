@@ -34,6 +34,10 @@ namespace RaaLabs.TimeSeries.NMEA.SentenceFormats
                 var speedThroughWater = Math.Sqrt(Math.Pow(float.Parse(longitudinalSpeedThroughWater), 2) + Math.Pow(float.Parse(transverseSpeedThroughWater), 2));
                 yield return new TagWithData("SpeedThroughWater", (speedThroughWater * 1852) / 3600);
             }
+            else if ((ValidSentence(longitudinalSpeedThroughWater) == true) && (ValidSentence(transverseSpeedThroughWater)) == false)
+            {
+                yield return new TagWithData("SpeedThroughWater", (float.Parse(longitudinalSpeedThroughWater) * 1852) / 3600);
+            }
         }
         private bool ValidSentence(string value)
         {
