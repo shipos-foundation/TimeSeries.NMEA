@@ -1,24 +1,44 @@
-FROM mcr.microsoft.com/dotnet/core/sdk:3.1 AS build-env
-WORKDIR /app
+FROM mcr.microsoft.com/dotnet/core/runtime:3.1-buster-slim as base
 
-COPY default.props ./default.props
-COPY Source/*.csproj ./Source/
+ARG CONFIGURATION=Release
 
-WORKDIR /app/Source
+RUN echo Configuration = $CONFIGURATION
 
-RUN dotnet restore
-
-COPY Source/ ./
-RUN dotnet publish -c Release -o out
-
-FROM mcr.microsoft.com/dotnet/core/runtime:3.1-buster-slim
-WORKDIR /app
-COPY --from=build-env /app/Source/out ./
-COPY --from=build-env /app/Source/data ./data
+RUN if [ "$CONFIGURATION" = "Debug" ] ; then apt-get update && \
+    apt-get install -y --no-install-recommends unzip procps && \
+    rm -rf /var/lib/apt/lists/* \
+    ; fi
 
 RUN useradd -ms /bin/bash moduleuser
 USER moduleuser
 
+
+RUN if [ "$CONFIGURATION" = "debug" ] ; then curl -sSL https://aka.ms/getvsdbgsh | bash /dev/stdin -v latest -l ~/vsdbg ; fi
+
+
+FROM mcr.microsoft.com/dotnet/core/sdk:3.1 AS build-env
+WORKDIR /app
+
+ARG CONFIGURATION
+
+VOLUME [ "/app/data" ]
+
+COPY default.props ./default.props
+COPY Source/*.csproj ./Source/
+
+WORKDIR /app/Source/
+
+RUN dotnet restore
+
+COPY Source/ ./
+RUN dotnet publish -c $CONFIGURATION -o out
+
+
+FROM base
 EXPOSE 5100/udp
 
-ENTRYPOINT ["dotnet", "RaaLabs.TimeSeries.KChief.dll"]
+WORKDIR /app
+COPY --from=build-env /app/Source/out ./
+COPY --from=build-env /app/Source/data ./data
+
+ENTRYPOINT ["dotnet", "RaaLabs.TimeSeries.NMEA.dll"]
