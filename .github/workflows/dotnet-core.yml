@@ -45,7 +45,6 @@ jobs:
         password: ${{ secrets.DOCKER_PASSWORD }}
         repository: ${{ env.DOCKER_HUB_REPO }}
         dockerfile: ./Source/Dockerfile
-        tag_with_sha: true
         push: false
 
     - name: Establish context
