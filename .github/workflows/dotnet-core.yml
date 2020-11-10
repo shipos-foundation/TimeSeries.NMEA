@@ -55,7 +55,7 @@ jobs:
         file: ./Source/Dockerfile
         build-args: CONFIGURATION="Release"
         no-cache: true
-        
+
     - name: Establish context
       id: context
       uses: dolittle/establish-context-action@v2
@@ -77,6 +77,8 @@ jobs:
         push: true
         context: .
         file: ./Source/Dockerfile
+        build-args: CONFIGURATION="Release"
+        no-cache: true
         tags: ${{ env.DOCKER_HUB_REPO }}:${{ steps.increment-version.outputs.next-version }}, ${{ env.DOCKER_HUB_REPO }}:latest
         
     - name: Create GitHub Release
