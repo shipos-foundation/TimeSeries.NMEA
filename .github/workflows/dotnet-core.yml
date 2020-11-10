@@ -53,7 +53,9 @@ jobs:
         push: false
         context: .
         file: ./Source/Dockerfile
-
+        build-args: CONFIGURATION="Release"
+        no-cache: true
+        
     - name: Establish context
       id: context
       uses: dolittle/establish-context-action@v2
