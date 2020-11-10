@@ -1,6 +1,6 @@
 # NMEA
 
-[![Build Status](https://dev.azure.com/shipos/OpenSource%20Projects/_apis/build/status/shipos-foundation.TimeSeries.NMEA?branchName=master)](https://dev.azure.com/shipos/OpenSource%20Projects/_build/latest?definitionId=3&branchName=master)
+![CI/CD](https://github.com/RaaLabs/IdentityMapper/workflows/.NET%20Core/badge.svg)
 
 ## Cloning
 

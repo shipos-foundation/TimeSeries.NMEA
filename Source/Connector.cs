@@ -47,6 +47,8 @@ namespace RaaLabs.TimeSeries.NMEA
             _parser = parser;
 
             _state.StateChanged += StateChanged;
+            _logger.Information($"Using protocol: {_configuration.Protocol}");
+
         }
 
         /// <inheritdoc/>
@@ -69,6 +71,7 @@ namespace RaaLabs.TimeSeries.NMEA
                 TcpClient client = null;
                 try
                 {
+                    _logger.Information($"Connecting to {_configuration.Ip}:{_configuration.Port}");
                     client = new TcpClient(_configuration.Ip, _configuration.Port);
                     using (var stream = client.GetStream())
                     {
