@@ -66,7 +66,6 @@ namespace RaaLabs.TimeSeries.NMEA
         }
         void ConnectTcp()
         {
-            _logger.Information($"Connecting to {_configuration.Ip}:{_configuration.Port}");
             while (true)
             {
                 TcpClient client = null;
