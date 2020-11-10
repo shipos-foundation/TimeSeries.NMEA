@@ -19,6 +19,6 @@ namespace RaaLabs.TimeSeries.NMEA.for_SentenceFormats.when_parsing_VBW
         It should_return_a_transverse_speed_through_water = () => results.ShouldEmit("TransverseSpeedThroughWater", 0.00f);
         It should_return_a_longitudinal_speed_over_ground = () => results.ShouldEmit("LongitudinalSpeedOverGround", 18.52f);
         It should_return_a_transverse_speed_over_ground = () => results.ShouldEmit("TransverseSpeedOverGround", 0.00f);
-        It should_return_a_speed_through_water = () => results.ShouldEmit("SpeedThroughWater", 4.63);
+        It should_return_a_speed_through_water = () => results.ShouldEmit("SpeedThroughWater", 4.63f);
     }
 }

@@ -29,15 +29,14 @@ namespace RaaLabs.TimeSeries.NMEA.SentenceFormats
             if (ValidSentence(transverseSpeedThroughWater)) yield return new TagWithData("TransverseSpeedThroughWater", (float.Parse(transverseSpeedThroughWater) * 1852) / 3600);
             if (ValidSentence(longitudinalSpeedOverGround)) yield return new TagWithData("LongitudinalSpeedOverGround", (float.Parse(longitudinalSpeedOverGround) * 1852) / 3600);
             if (ValidSentence(transverseSpeedOverGround)) yield return new TagWithData("TransverseSpeedOverGround", (float.Parse(transverseSpeedOverGround) * 1852) / 3600);
-            if ((ValidSentence(longitudinalSpeedThroughWater)) && (ValidSentence(transverseSpeedThroughWater)))
+            if (ValidSentence(longitudinalSpeedThroughWater)) 
             {
-                var speedThroughWater = Math.Sqrt(Math.Pow(float.Parse(longitudinalSpeedThroughWater), 2) + Math.Pow(float.Parse(transverseSpeedThroughWater), 2));
+                float transverse = ValidSentence(transverseSpeedThroughWater) ? float.Parse(transverseSpeedThroughWater) : 0.0f;
+                float longitudinal = float.Parse(longitudinalSpeedThroughWater);
+                float speedThroughWater = (float) Math.Sqrt(Math.Pow(longitudinal, 2) + Math.Pow(transverse, 2));
                 yield return new TagWithData("SpeedThroughWater", (speedThroughWater * 1852) / 3600);
             }
-            else if ((ValidSentence(longitudinalSpeedThroughWater) == true) && (ValidSentence(transverseSpeedThroughWater)) == false)
-            {
-                yield return new TagWithData("SpeedThroughWater", (float.Parse(longitudinalSpeedThroughWater) * 1852) / 3600);
-            }
+  
         }
         private bool ValidSentence(string value)
         {
